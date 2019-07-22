@@ -1,53 +1,22 @@
 import React, {useState, useEffect} from 'react';
 import './App.css';
-import * as contentful from 'contentful';
-require('dotenv').config()
-
-var client = contentful.createClient({
-  space: process.env.REACT_APP_CONTENTFUL_SPACE_ID,
-  accessToken: process.env.REACT_APP_CONTENTFUL_ACCESS_TOKEN
-})
-
-var moment = require('moment');
+import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom"
+import Apply from './Components/Apply';
+import AcademyTable from './Components/AcademyTable';
 
 function App() {
-  const [academies, setAcademies] = useState([])
-
-  useEffect(() => {
-    client.getEntries({
-      content_type: 'filmAcademy',
-      order: 'fields.location'
-    }).then(entries => {
-      setAcademies(entries.items)
-    })
-
-  })
 
   return (
-    <div className="App">
-      <table>
-        <tbody>
-          <tr>
-            <th>Location</th>
-            <th>Organisation</th>
-            <th>Enquiries</th>
-            <th>Application closing date</th>
-            <th>Course start date</th>
-            <th>Course end date</th>
-          </tr>
-          {academies.map(academy =>
-            <tr>
-              <td>{academy.fields.location}</td>
-              <td>{academy.fields.organisation}</td>
-              <td>{academy.fields.contactEmail}</td>
-              <td>{moment(academy.fields.deadline).format("Do MMM YYYY")}</td>
-              <td>{moment(academy.fields.startDate).format("Do MMM YYYY")}</td>
-              <td>{moment(academy.fields.endDate).format("Do MMM YYYY")}</td>
-            </tr>
-          )}
-        </tbody>
-      </table>
-    </div>
+      <Router>
+        <Switch>
+          <Route exact path="/">
+            <h1>Film Academies</h1>
+            <Link to={'/academies'}>See the academies here</Link>
+          </Route>
+          <Route exact path="/apply" component={Apply} />
+          <Route exact path="/academies" component={AcademyTable} />
+        </Switch>
+      </Router>
   );
 }
 
