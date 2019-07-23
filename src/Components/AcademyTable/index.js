@@ -1,8 +1,9 @@
 import React, { useEffect, useState }  from 'react';
 import * as contentful from 'contentful';
 import { Link } from 'react-router-dom'
-var moment = require('moment');
 require('dotenv').config()
+
+var moment = require('moment');
 
 var client = contentful.createClient({
   space: process.env.REACT_APP_CONTENTFUL_SPACE_ID,
@@ -10,6 +11,7 @@ var client = contentful.createClient({
 })
 
 export default function AcademyTable (props) {
+
   const [academies, setAcademies] = useState([])
 
   useEffect(() => {
@@ -41,7 +43,7 @@ export default function AcademyTable (props) {
             <td>{moment(academy.fields.deadline).format("Do MMM YYYY")}</td>
             <td>{moment(academy.fields.startDate).format("Do MMM YYYY")}</td>
             <td>{moment(academy.fields.endDate).format("Do MMM YYYY")}</td>
-            <Link to={'/apply'}>Apply</Link>
+            <Link to={'/academies/' + academy.sys.id + '/apply'}>Apply</Link>
           </tr>
         )}
       </tbody>
