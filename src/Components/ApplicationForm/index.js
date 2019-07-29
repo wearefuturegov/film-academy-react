@@ -11,18 +11,19 @@ var client = contentful.createClient({
 
 export default function ApplicationForm (props) {
 
-  const [academy, setAcademy] = useState('')
+  const [academy, setAcademy] = useState(false)
 
   useEffect(() => {
     client.getEntry(props.match.params.id).then(entry => {
       setAcademy(entry)
-      console.log(academy.fields)
     })
   })
 
   return (
     <div>
       <Link to={'/'}>Home</Link>
+      {academy && academy.fields.location}
+      <img src={academy && academy.fields.logo.fields.file.url} />
     </div>
   );
 }
